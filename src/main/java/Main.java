@@ -1,10 +1,10 @@
-import org.json.simple.JSONArray;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
         GoEuroApiClient apiClient = new GoEuroApiClient();
-        JSONArray jsonArray = apiClient.sendQuery("Berlin");
-        System.out.println(jsonArray.toJSONString());
+        List<City> cities = apiClient.sendQuery("Berlin");
+        System.out.println(cities);
     }
 }
