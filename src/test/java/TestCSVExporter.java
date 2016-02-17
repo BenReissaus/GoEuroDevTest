@@ -1,5 +1,6 @@
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
@@ -10,23 +11,21 @@ import java.util.List;
  */
 public class TestCSVExporter {
 
-    private CSVExporter csvExporter;
-    private List<City> cities;
-    private final File output = new File("data.csv");
+    private static CSVExporter csvExporter;
+    private static List<City> cities;
+    private static final File output = new File("data.csv");
 
-    @Before
-    public void setUp(){
+    @BeforeClass
+    public static void setUp(){
         csvExporter = new CSVExporter();
-
         GoEuroApiClient goEuroApiClient = new GoEuroApiClient();
         cities = goEuroApiClient.sendQuery("Berlin");
+        CSVExporter csvExporter = new CSVExporter();
+        csvExporter.write(cities);
     }
 
     @Test
     public void testOutputfileExistance() {
-
-        CSVExporter csvExporter = new CSVExporter();
-        csvExporter.write(cities);
 
         final File output = new File("data.csv");
         Assert.assertTrue(output.exists());
@@ -34,10 +33,6 @@ public class TestCSVExporter {
 
     @Test
     public void testOutputfileHeader() throws IOException {
-
-        CSVExporter csvExporter = new CSVExporter();
-        csvExporter.write(cities);
-
         BufferedReader reader = new BufferedReader(new FileReader(output));
         String header = "_id,name,type,latitude,longitude";
         Assert.assertEquals(header, reader.readLine());
@@ -46,10 +41,6 @@ public class TestCSVExporter {
 
     @Test
     public void testOutputFileLineNumbers() throws IOException {
-
-        CSVExporter csvExporter = new CSVExporter();
-        csvExporter.write(cities);
-
         BufferedReader reader = new BufferedReader(new FileReader(output));
         int numberLines = 0;
         while(reader.readLine() != null){
@@ -63,10 +54,6 @@ public class TestCSVExporter {
 
     @Test
     public void testOutputFileLineStructure() throws IOException {
-
-        CSVExporter csvExporter = new CSVExporter();
-        csvExporter.write(cities);
-
         BufferedReader reader = new BufferedReader(new FileReader(output));
         String line;
         while((line = reader.readLine()) != null){

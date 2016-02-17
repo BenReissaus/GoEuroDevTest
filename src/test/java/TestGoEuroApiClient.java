@@ -1,7 +1,4 @@
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.*;
 import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 
 import java.util.List;
@@ -11,31 +8,31 @@ import java.util.List;
  */
 public class TestGoEuroApiClient {
 
-    private GoEuroApiClient apiClient;
+    private static GoEuroApiClient apiClient;
 
     @Rule
     public final ExpectedSystemExit exit = ExpectedSystemExit.none();
 
-    @Before
-    public void setUp(){
+    @BeforeClass
+    public static void setUp(){
         apiClient = new GoEuroApiClient();
     }
 
     @Test
     public void testQueryResultNotNull() {
-        List<City> cities = this.apiClient.sendQuery("Berlin");
+        List<City> cities = apiClient.sendQuery("Berlin");
         Assert.assertNotEquals(null, cities);
     }
 
     @Test
     public void testQueryResultMoreThanOne() {
-        List<City> cities = this.apiClient.sendQuery("Berlin");
+        List<City> cities = apiClient.sendQuery("Berlin");
         Assert.assertTrue(cities.size() > 0);
     }
 
     @Test
     public void testQueryResultContent() {
-        List<City> cities = this.apiClient.sendQuery("Berlin");
+        List<City> cities = apiClient.sendQuery("Berlin");
         for (City city : cities) {
             Assert.assertTrue(city.getFullName().contains("Berlin"));
         }
@@ -44,12 +41,12 @@ public class TestGoEuroApiClient {
     @Test
     public void testBadQuery() {
         exit.expectSystemExitWithStatus(1);
-        List<City> cities = this.apiClient.sendQuery("/");
+        List<City> cities = apiClient.sendQuery("/");
     }
 
     @Test
     public void testEmptyResult() {
-        List<City> cities = this.apiClient.sendQuery("aaaabbbbcccc");
+        List<City> cities = apiClient.sendQuery("aaaabbbbcccc");
         Assert.assertEquals(0, cities.size());
     }
 }
