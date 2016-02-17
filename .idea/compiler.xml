@@ -24,9 +24,17 @@
         <processorPath useClasspath="true" />
         <module name="GoEuroDevTest" />
       </profile>
+      <profile default="false" name="Annotation profile for GoEuroTest" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="GoEuroTest" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="GoEuroDevTest" target="1.5" />
+      <module name="GoEuroTest" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
