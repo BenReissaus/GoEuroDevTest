@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.http.HttpStatus;
 
 /**
  * Created by Benjamin Reissaus on 12/02/16.
@@ -40,9 +41,20 @@ public class GoEuroApiClient {
             HttpURLConnection con = (HttpURLConnection) apiUrl.openConnection();
             con.setRequestMethod("GET");
 
-            // retrieve JSON Object and deserialize it into list of City objects
-            ObjectMapper objMapper = new ObjectMapper();
-            cities = Arrays.asList(objMapper.readValue(con.getInputStream(), City[].class));
+
+            int responseCode = con.getResponseCode();
+            if(responseCode == HttpStatus.SC_OK) { // server answered with 200
+
+                // retrieve JSON Object and deserialize it into list of City objects
+                ObjectMapper objMapper = new ObjectMapper();
+                cities = Arrays.asList(objMapper.readValue(con.getInputStream(), City[].class));
+
+            } else {
+
+                System.out.println("The query could not be processed properly. The server answered with: "
+                        + responseCode + " - " + con.getResponseMessage());
+                System.exit(1);
+            }
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
